@@ -1,3 +1,4 @@
+import com.almasb.fxgl.app.FXGL;
 import com.almasb.fxgl.entity.*;
 import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.physics.BoundingShape;
@@ -48,6 +49,21 @@ public class GameLevelFactory implements EntityFactory {
                 .from(data)
                 .type(BasicGameApp.EntityType.PLAYER)
                 .viewFromTextureWithBBox("tank.png")
+                .renderLayer(RenderLayer.DEFAULT)
+                .with(new CollidableComponent(true))
+                .with(new PlayerController())
+                .build();
+    }
+
+    @Spawns("enemy")
+    public Entity newEnemy(SpawnData data) {
+        return Entities.builder()
+                .from(data)
+                .type(BasicGameApp.EntityType.ENEMY)
+                .type(BasicGameApp.EntityType.TANK)
+                .viewFromNodeWithBBox(FXGL.getAssetLoader()
+                        .loadTexture("tank.png")
+                        .multiplyColor(Color.rgb(200,200,55)))
                 .with(new CollidableComponent(true))
                 .with(new PlayerController())
                 .build();

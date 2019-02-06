@@ -1,27 +1,21 @@
 import com.almasb.fxgl.app.FXGL;
+import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.entity.Entities;
 import com.almasb.fxgl.entity.Entity;
 
+import com.almasb.fxgl.entity.RenderLayer;
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.entity.components.*;
-import javafx.animation.FadeTransition;
 import javafx.scene.shape.Circle;
-import javafx.util.Duration;
 
 import java.util.List;
-import java.util.Random;
 
-/**
- * TODO: merge with MoveControl
- *
- * @author Almas Baimagambetov (almaslvl@gmail.com)
- */
 public class PlayerController extends Component {
     private PositionComponent position;
     private BoundingBoxComponent bbox;
     private ViewComponent view;
     private RotationComponent rotation;
-    private static final int TANK_SPEED = 3;
+    private static final double TANK_SPEED = 2;
 
     private MoveDirection moveDir = MoveDirection.UP;
     private Entity bullet;
@@ -45,27 +39,27 @@ public class PlayerController extends Component {
 
     public void up() {
         moveDir = MoveDirection.UP;
-        move(0, -TANK_SPEED*speed);
+        move(0, -TANK_SPEED * speed);
         rotation.setValue(0);
         view.getView().setScaleX(1);
     }
 
     public void down() {
         moveDir = MoveDirection.DOWN;
-        move(0, TANK_SPEED*speed);
+        move(0, TANK_SPEED * speed);
         rotation.setValue(180);
         view.getView().setScaleX(1);
     }
 
     public void left() {
         moveDir = MoveDirection.LEFT;
-        move(-TANK_SPEED*speed, 0);
+        move(-TANK_SPEED * speed, 0);
         rotation.setValue(-90);
     }
 
     public void right() {
         moveDir = MoveDirection.RIGHT;
-        move(TANK_SPEED*speed, 0);
+        move(TANK_SPEED * speed, 0);
         rotation.setValue(90);
     }
 
@@ -73,10 +67,14 @@ public class PlayerController extends Component {
         if (!getEntity().isActive()) {
             return;
         }
-        List<Entity> blocks = FXGL.getApp().getGameWorld().getEntitiesByType(
+        GameApplication g = FXGL.getApp();
+        List<Entity> blocks = g.getGameWorld().getEntitiesByType(
                 BasicGameApp.EntityType.BRICK,
                 BasicGameApp.EntityType.STONE,
-                BasicGameApp.EntityType.BORDER);
+                BasicGameApp.EntityType.BORDER,
+                BasicGameApp.EntityType.EAGLE,
+                BasicGameApp.EntityType.TANK
+        );
         double mag = Math.sqrt(dx * dx + dy * dy);
         long length = Math.round(mag);
         double unitX = dx / mag;
@@ -93,12 +91,14 @@ public class PlayerController extends Component {
             if (collision) {
                 position.translate(-unitX, -unitY);
                 break;
+            } else {
+                g.getGameState().increment("pixelsMoved", +1);
             }
         }
     }
 
     public synchronized void shoot() {
-        if(bullet != null) {
+        if (bullet != null) {
             return;
         }
         BasicGameApp g = (BasicGameApp) FXGL.getApp();
@@ -106,6 +106,7 @@ public class PlayerController extends Component {
                 .type(BasicGameApp.EntityType.Bullet)
                 .at(position.getX() + 21, position.getY() + 21)
                 .viewFromNodeWithBBox(new Circle(8))
+                .renderLayer(RenderLayer.BACKGROUND)
                 .with(new CollidableComponent(true))
                 .with(new BulletController(moveDir))
                 .buildAndAttach(g.getGameWorld());

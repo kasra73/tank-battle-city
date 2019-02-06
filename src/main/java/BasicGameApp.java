@@ -1,27 +1,26 @@
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.entity.Entities;
 import com.almasb.fxgl.entity.Entity;
+import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.components.CollidableComponent;
-import com.almasb.fxgl.extra.physics.handlers.CollectibleHandler;
 import com.almasb.fxgl.input.Input;
+import com.almasb.fxgl.input.InputModifier;
 import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.physics.CollisionHandler;
-import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.settings.GameSettings;
 import javafx.scene.input.KeyCode;
-import javafx.scene.shape.Circle;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 
 import java.util.Map;
 
 public class BasicGameApp extends GameApplication {
-    private Entity bullet;
-
     public static final int BLOCK_SIZE = 15;
     public static final int MAP_SIZE = 60;
 
     public enum EntityType {
-        PLAYER, BRICK, STONE, Bullet, BORDER, EAGLE
+        PLAYER, BRICK, STONE, Bullet, BORDER, EAGLE, ENEMY, TANK
     }
 
     public PlayerController getPlayerControl() {
@@ -34,18 +33,33 @@ public class BasicGameApp extends GameApplication {
     @Override
     protected void initSettings(GameSettings settings) {
         settings.setConfigClass(Config.class);
-        settings.setWidth(810);
-        settings.setHeight(750);
+        settings.setWidth(870);
+        settings.setHeight(740);
         settings.setTitle("Tank Battle City");
         settings.setVersion("v0.1");
     }
 
     @Override
     protected void initGame() {
-        PhysicsComponent physics = new PhysicsComponent();
-
         getGameWorld().addEntityFactory(new GameLevelFactory());
         getGameWorld().setLevelFromMap("level1.tmx");
+        Entities.builder()
+                .type(EntityType.ENEMY)
+                .type(EntityType.TANK)
+                .at(16,16)
+                .rotate(180)
+                .viewFromTextureWithBBox("tank_pink.png")
+                .with(new CollidableComponent(true))
+                .buildAndAttach(getGameWorld());
+        Entities.builder()
+                .type(EntityType.ENEMY)
+                .type(EntityType.TANK)
+                .at(256,16)
+                .rotate(90)
+                .viewFromTextureWithBBox("tank_big_green.png")
+                .with(new CollidableComponent(true))
+                .buildAndAttach(getGameWorld());
+        getGameWorld().spawn("enemy", new SpawnData(376,16));
     }
 
     @Override
@@ -64,28 +78,28 @@ public class BasicGameApp extends GameApplication {
     @Override
     protected void initInput() {
         Input input = getInput();
-        getInput().addAction(new UserAction("Up") {
+        input.addAction(new UserAction("Up") {
             @Override
             protected void onAction() {
                 getPlayerControl().up();
             }
         }, KeyCode.UP);
 
-        getInput().addAction(new UserAction("Down") {
+        input.addAction(new UserAction("Down") {
             @Override
             protected void onAction() {
                 getPlayerControl().down();
             }
         }, KeyCode.DOWN);
 
-        getInput().addAction(new UserAction("Left") {
+        input.addAction(new UserAction("Left") {
             @Override
             protected void onAction() {
                 getPlayerControl().left();
             }
         }, KeyCode.LEFT);
 
-        getInput().addAction(new UserAction("Right") {
+        input.addAction(new UserAction("Right") {
             @Override
             protected void onAction() {
                 getPlayerControl().right();
@@ -107,17 +121,14 @@ public class BasicGameApp extends GameApplication {
 
     @Override
     protected void initUI() {
-//        getGameScene().setBackgroundColor(Color.WHITE);
-//        Text textPixels = new Text();
-//        textPixels.setTranslateX(50); // x = 50
-//        textPixels.setTranslateY(100); // y = 100
-//        textPixels.textProperty()
-//                .bind(getGameState().intProperty("pixelsMoved").asString());
-//        Texture brickTexture = getAssetLoader().loadTexture("brick.png");
-//        brickTexture.setTranslateX(50);
-//        brickTexture.setTranslateY(450);
-//        Texture menuTexture = getAssetLoader().loadTexture("border.png");
-//        getGameScene().addUINodes(menuTexture, textPixels, brickTexture);
+        Text textPixels = new Text();
+        textPixels.setTranslateX(830); // x = 50
+        textPixels.setTranslateY(100); // y = 100
+        textPixels.textProperty()
+                .bind(getGameState().intProperty("pixelsMoved").asString());
+        Rectangle r = new Rectangle(60, 745, Color.GRAY);
+        r.setX(810);
+        getGameScene().addUINodes(r, textPixels);
     }
 
     public static void main(String[] args) {

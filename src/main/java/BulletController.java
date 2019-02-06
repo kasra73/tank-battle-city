@@ -46,7 +46,7 @@ public class BulletController extends Component {
             case UP:
                 return new Rectangle2D(
                         position.getX() - 21,
-                        position.getY(),
+                        position.getY() - 6,
                         50,
                         6);
             case DOWN:
@@ -57,7 +57,7 @@ public class BulletController extends Component {
                         6);
             case LEFT:
                 return new Rectangle2D(
-                        position.getX(),
+                        position.getX() - 6,
                         position.getY() - 21,
                         6,
                         50);

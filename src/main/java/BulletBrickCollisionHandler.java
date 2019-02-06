@@ -2,6 +2,8 @@ import com.almasb.fxgl.app.FXGL;
 import com.almasb.fxgl.entity.Entities;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.physics.CollisionHandler;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.shape.Rectangle;
 
 import java.util.List;
 
@@ -20,9 +22,11 @@ public class BulletBrickCollisionHandler extends CollisionHandler {
     @Override
     protected void onCollisionBegin(Entity bullet, Entity brick) {
         BulletController bulletController = bullet.getComponent(BulletController.class);
-//        Entities.builder()
-//                .viewFromNode(bulletController.getExplodingRect())
-//                .buildAndAttach(g.getGameWorld());
+//        Rectangle2D r = bulletController.getExplodingRect();
+//        Entities.builder().at(r.getMinX(),r.getMinY()).viewFromNode(new Rectangle(
+//                r.getWidth(),
+//                r.getHeight()
+//        )).buildAndAttach(g.getGameWorld());
         List<Entity> entitiesInRange = g.getGameWorld()
                 .getEntitiesInRange(bulletController.getExplodingRect());
         g.getPlayerControl().removeBullet();
