@@ -1,0 +1,17 @@
+#
+# Pacman enemy 2
+#
+
+# Alias definitions
+
+# Conditions
+
+# Actions
+import randomMove : "com.simplegame.ai.RandomMoveAction"
+import randomAStarMove : "com.simplegame.ai.RandomAStarMoveAction"
+
+# Tree definition (note that root is optional)
+root
+    randomSelector
+        randomMove times:"uniform,1,2"
+#       randomAStarMove

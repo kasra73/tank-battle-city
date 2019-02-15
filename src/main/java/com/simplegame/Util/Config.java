@@ -1,3 +1,5 @@
+package com.simplegame.Util;
+
 public class Config {
     private int tankSpeed;
     private int bulletSpeed;

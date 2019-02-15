@@ -1,13 +1,16 @@
+package com.simplegame.Component;
+
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.entity.components.BoundingBoxComponent;
 import com.almasb.fxgl.entity.components.PositionComponent;
 import com.almasb.fxgl.entity.components.RotationComponent;
 import com.almasb.fxgl.entity.components.ViewComponent;
+import com.simplegame.Util.MoveDirection;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 
-public class BulletController extends Component {
+public class BulletControlComponent extends Component {
     private PositionComponent position;
     private BoundingBoxComponent bbox;
     private ViewComponent view;
@@ -16,10 +19,12 @@ public class BulletController extends Component {
     private MoveDirection moveDir;
     private Entity bullet;
     private Point2D velocity;
+    private TankControlComponent shooterTankControlComponent;
 
-    public BulletController(MoveDirection moveDir) {
+    public BulletControlComponent(MoveDirection moveDir, TankControlComponent shooterTankControlComponent) {
         super();
         this.moveDir = moveDir;
+        this.shooterTankControlComponent = shooterTankControlComponent;
         switch (moveDir) {
             case UP:
                 velocity = new Point2D(0,-7);
@@ -70,5 +75,19 @@ public class BulletController extends Component {
         }
         System.out.println("move dir: " + moveDir);
         return null;
+    }
+
+    @Override
+    public void onRemoved() {
+        super.onRemoved();
+
+    }
+
+    public void removeBullet() {
+        shooterTankControlComponent.removeBullet();
+    }
+
+    public TankControlComponent getShooterTankControlComponent() {
+        return shooterTankControlComponent;
     }
 }

@@ -1,0 +1,32 @@
+[
+  {
+    "tank-type": "simple",
+    "color": "lightblue",
+    "have-bonus": false
+  },
+  {
+    "tank-type": "simple",
+    "color": "lightblue",
+    "have-bonus": true
+  },
+  {
+    "tank-type": "simple",
+    "color": "lightblue",
+    "have-bonus": false
+  },
+  {
+    "tank-type": "simple",
+    "color": "red",
+    "have-bonus": true
+  },
+  {
+    "tank-type": "simple",
+    "color": "red",
+    "have-bonus": false
+  },
+  {
+    "tank-type": "simple",
+    "color": "red",
+    "have-bonus": false
+  }
+]

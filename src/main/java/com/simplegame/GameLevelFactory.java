@@ -1,8 +1,14 @@
-import com.almasb.fxgl.app.FXGL;
+package com.simplegame;
+
+import com.simplegame.Component.ExplosionControlComponent;
 import com.almasb.fxgl.entity.*;
 import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
+import com.simplegame.Component.WaterAnimationControlComponent;
+import com.simplegame.Controller.GameController;
+import com.simplegame.Controller.TankController;
+import com.simplegame.Exception.NoControllerException;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
@@ -43,30 +49,29 @@ public class GameLevelFactory implements EntityFactory {
                 .build();
     }
 
-    @Spawns("player")
-    public Entity newPlayer(SpawnData data) {
+    @Spawns("reward")
+    public Entity newReward(SpawnData data) {
         return Entities.builder()
                 .from(data)
-                .type(BasicGameApp.EntityType.PLAYER)
-                .viewFromTextureWithBBox("tank.png")
-                .renderLayer(RenderLayer.DEFAULT)
+                .type(BasicGameApp.EntityType.REWARD)
+                .viewFromTextureWithBBox("bill.png")
                 .with(new CollidableComponent(true))
-                .with(new PlayerController())
+                .renderLayer(RenderLayer.DEFAULT)
                 .build();
     }
 
-    @Spawns("enemy")
-    public Entity newEnemy(SpawnData data) {
-        return Entities.builder()
-                .from(data)
-                .type(BasicGameApp.EntityType.ENEMY)
-                .type(BasicGameApp.EntityType.TANK)
-                .viewFromNodeWithBBox(FXGL.getAssetLoader()
-                        .loadTexture("tank.png")
-                        .multiplyColor(Color.rgb(200,200,55)))
-                .with(new CollidableComponent(true))
-                .with(new PlayerController())
-                .build();
+
+    @Spawns("tank")
+    public Entity newTank(SpawnData data) throws NoControllerException {
+        TankController controller;
+        if(data.hasKey("control")) {
+            controller = GameController
+                    .getInstance()
+                    .getController(data.get("control"));
+        } else {
+            throw new NoControllerException("no suitable controller for this tank");
+        }
+        return controller.getTankMaker().makeTank();
     }
 
     @Spawns("eagle")
@@ -74,9 +79,41 @@ public class GameLevelFactory implements EntityFactory {
         return Entities.builder()
                 .from(data)
                 .type(BasicGameApp.EntityType.EAGLE)
+                .renderLayer(RenderLayer.DEFAULT)
                 .viewFromTextureWithBBox("eagle.png")
                 .with(new CollidableComponent(true))
-                .with(new PlayerController())
+                .build();
+    }
+
+    @Spawns("water")
+    public Entity newWater(SpawnData data) {
+        return Entities.builder()
+                .from(data)
+                .type(BasicGameApp.EntityType.WATER)
+                .renderLayer(RenderLayer.BOTTOM)
+                .bbox(new HitBox(
+                        "WATER_ZONE",
+                        BoundingShape.box(60, 60)))
+                .with(new WaterAnimationControlComponent())
+                .build();
+    }
+
+    @Spawns("grass")
+    public Entity newGrass(SpawnData data) {
+        return Entities.builder()
+                .from(data)
+                .type(BasicGameApp.EntityType.GRASS)
+                .renderLayer(RenderLayer.TOP)
+                .viewFromTexture("grass.png")
+                .build();
+    }
+
+    @Spawns("explosion")
+    public Entity newExplosion(SpawnData data) {
+        return Entities.builder()
+                .from(data)
+                .renderLayer(RenderLayer.DEFAULT)
+                .with(new ExplosionControlComponent())
                 .build();
     }
 
