@@ -3,10 +3,7 @@ package com.simplegame;
 import com.almasb.fxgl.extra.ai.pathfinding.AStarGrid;
 import com.almasb.fxgl.extra.ai.pathfinding.NodeState;
 import com.almasb.fxgl.input.ActionType;
-import com.simplegame.CollisionHandler.BulletBrickCollisionHandler;
-import com.simplegame.CollisionHandler.BulletBulletCollisionHandler;
-import com.simplegame.CollisionHandler.BulletStoneCollisionHandler;
-import com.simplegame.CollisionHandler.BulletTankCollisionHandler;
+import com.simplegame.CollisionHandler.*;
 import com.simplegame.Component.BulletControlComponent;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.entity.Entity;
@@ -88,6 +85,8 @@ public class BasicGameApp extends GameApplication {
         getPhysicsWorld().addCollisionHandler(new BulletBrickCollisionHandler());
         getPhysicsWorld().addCollisionHandler(new BulletTankCollisionHandler());
         getPhysicsWorld().addCollisionHandler(new BulletBulletCollisionHandler());
+        getPhysicsWorld().addCollisionHandler(new TankRewardCollisionHandler());
+        getPhysicsWorld().addCollisionHandler(new BulletEagleCollisionHandler());
         getPhysicsWorld().addCollisionHandler(new CollisionHandler(EntityType.BULLET, EntityType.BORDER) {
             // order of types is the same as passed into the constructor
             @Override
@@ -123,7 +122,7 @@ public class BasicGameApp extends GameApplication {
     protected void initGameVars(Map<String, Object> vars) {
         vars.put("remainingTanksCount", 0);
         vars.put("remainingLives", 2);
-        vars.put("pixelsMoved", 0);
+        vars.put("score", 0);
     }
 
     @Override

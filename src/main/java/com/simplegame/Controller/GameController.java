@@ -88,8 +88,12 @@ public class GameController {
 
     public void spawnReward() {
         Random random = new Random();
-        int x = (random.nextInt() % 54) * BasicGameApp.BLOCK_SIZE + 16;
-        int y = (random.nextInt() % 54) * BasicGameApp.BLOCK_SIZE + 16;
+        int x = (random.nextInt() % 15) * BasicGameApp.BLOCK_SIZE + 16;
+        int y = (random.nextInt() % 15) * BasicGameApp.BLOCK_SIZE + 16;
         FXGL.getGameWorld().spawn("reward", new SpawnData(x, y));
+    }
+
+    public void rewardCollected(Entity reward) {
+
     }
 }

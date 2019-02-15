@@ -115,8 +115,6 @@ public class TankControlComponent extends Component {
                 setMoveDirection(null);
                 position.translate(-unitX, -unitY);
                 break;
-            } else {
-                g.getGameState().increment("pixelsMoved", +1);
             }
         }
     }

@@ -56,10 +56,9 @@ public class GameLevelFactory implements EntityFactory {
                 .type(BasicGameApp.EntityType.REWARD)
                 .viewFromTextureWithBBox("bill.png")
                 .with(new CollidableComponent(true))
-                .renderLayer(RenderLayer.DEFAULT)
+                .renderLayer(RenderLayer.TOP)
                 .build();
     }
-
 
     @Spawns("tank")
     public Entity newTank(SpawnData data) throws NoControllerException {

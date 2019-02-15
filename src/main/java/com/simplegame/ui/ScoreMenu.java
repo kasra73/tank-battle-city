@@ -8,18 +8,18 @@ import javafx.scene.image.ImageView;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
-public class ShowLifeMenu extends Group {
-    public ShowLifeMenu() {
+public class ScoreMenu extends Group {
+    public ScoreMenu() {
         ObservableList<Node> children = this.getChildren();
-        ImageView flag = new ImageView(FXGL.getAssetLoader().loadImage("menu/flag.png"));
-        children.add(flag);
+
+        Text scoreText = new Text();
+        scoreText.setText("Score: ");
+        children.add(scoreText);
 
         Text textPixels = new Text();
-        textPixels.setTranslateX(30);
-        textPixels.setTranslateY(70);
-        textPixels.setFont(new Font(45));
+        textPixels.setX(40);
         textPixels.textProperty()
-                .bind(FXGL.getGameState().intProperty("remainingLives").asString());
+                .bind(FXGL.getGameState().intProperty("score").asString());
         children.add(textPixels);
     }
 }

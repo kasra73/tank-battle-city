@@ -4,7 +4,6 @@ import com.simplegame.BasicGameApp;
 import com.simplegame.Component.TankControlComponent;
 import com.simplegame.TankMaker.TankMakerTemplate;
 import com.simplegame.Util.MoveDirection;
-import com.sun.istack.internal.NotNull;
 import javafx.geometry.Point2D;
 
 public abstract class TankController {
@@ -13,7 +12,7 @@ public abstract class TankController {
 
     private Point2D initLocation;
 
-    public TankController(@NotNull String name) {
+    public TankController(String name) {
         this.name = name;
         this.initLocation = new Point2D(286,735);
     }

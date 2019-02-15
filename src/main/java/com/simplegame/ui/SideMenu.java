@@ -1,12 +1,10 @@
 package com.simplegame.ui;
 
-import com.almasb.fxgl.app.FXGL;
 import javafx.collections.ObservableList;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Text;
 
 public class SideMenu extends Group {
     public SideMenu() {
@@ -23,11 +21,9 @@ public class SideMenu extends Group {
         showLifeMenu.setTranslateY(240);
         children.add(showLifeMenu);
 
-        Text textPixels = new Text();
-        textPixels.setTranslateX(30); // x = 50
-        textPixels.setTranslateY(600); // y = 100
-        textPixels.textProperty()
-                .bind(FXGL.getGameState().intProperty("pixelsMoved").asString());
-        children.add(textPixels);
+        ScoreMenu scoreMenu = new ScoreMenu();
+        scoreMenu.setTranslateX(0);
+        scoreMenu.setTranslateY(600);
+        children.add(scoreMenu);
     }
 }

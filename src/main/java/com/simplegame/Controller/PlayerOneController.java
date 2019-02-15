@@ -9,7 +9,6 @@ import com.simplegame.TankMaker.EnemyTankMaker;
 import com.simplegame.TankMaker.PlayerTankMaker;
 import com.simplegame.TankMaker.TankMakerTemplate;
 import com.simplegame.Util.MoveDirection;
-import com.sun.istack.internal.NotNull;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 
@@ -20,7 +19,7 @@ public class PlayerOneController extends TankController implements KeyEevntSubsc
     private KeyCode moveDirection = null;
     private List<KeyCode> moveKeys = Arrays.asList(KeyCode.LEFT, KeyCode.RIGHT, KeyCode.DOWN, KeyCode.UP);
 
-    public PlayerOneController(@NotNull String name) {
+    public PlayerOneController(String name) {
         super(name);
         KeyboardObserverManager kom = KeyboardObserverManager.getInstance();
         kom.subscribe(this);
